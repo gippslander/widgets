@@ -1,6 +1,268 @@
 /* --- WIDGET CONTAINER --- */
 #gippslander-container {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    /* ... all your CSS styles ... */
+    width: 100%;
+    max-width: 900px; 
+    margin: 0 auto;
+    box-sizing: border-box;
+    /* Optional: Ensure all internal elements inherit box-sizing */
+    all: initial; 
+    display: block; /* Ensure it behaves like a container */
 }
-/* ... all the way to the end of the styles ... */
+#gippslander-container * {
+    box-sizing: border-box;
+    font-family: inherit;
+    line-height: inherit;
+    font-size: inherit;
+}
+
+/* --- TOP BAR --- */
+#gippslander-container .gipps-top-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+#gippslander-container .gipps-search-wrapper {
+    flex: 1;
+    position: relative;
+}
+
+#gippslander-container #gipps-search-input {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    background-color: #f9f9f9;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    height: 54px;
+}
+
+#gippslander-container #gipps-search-input:focus {
+    border-color: #a0a0a0;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* --- POST JOB BUTTON --- */
+#gippslander-container .gipps-post-btn {
+    background-color: #9e978e; /* Inverloch Grey */
+    color: #ffffff !important;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+    height: 54px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+    transition: background-color 0.2s, transform 0.1s;
+    box-sizing: border-box;
+    border: none;
+}
+
+#gippslander-container .gipps-post-btn:hover {
+    background-color: #8a847c;
+    transform: translateY(-1px);
+}
+
+/* --- JOB CARD --- */
+#gippslander-container .gipps-job-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#gippslander-container .gipps-job-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+    border-color: #d1d5db;
+}
+
+/* --- CARD CONTENT --- */
+#gippslander-container .gipps-card-top {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start; 
+    flex: 1; 
+}
+
+#gippslander-container .gipps-logo-box {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    flex-shrink: 0;
+    object-fit: contain;
+    padding: 4px;
+}
+#gippslander-container .gipps-logo-box.is-letter {
+    background-color: #1f2937;
+    border: none;
+    padding: 0;
+}
+
+#gippslander-container .gipps-job-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0; 
+}
+
+#gippslander-container .gipps-job-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 6px 0;
+    line-height: 1.4;
+}
+
+#gippslander-container .gipps-job-company {
+    font-size: 15px;
+    color: #6b7280;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+#gippslander-container .gipps-job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+#gippslander-container .gipps-tag {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+#gippslander-container .gipps-salary {
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #d1fae5;
+}
+
+/* --- APPLY BUTTON --- */
+#gippslander-container .gipps-apply-btn {
+    background-color: #9e978e;
+    color: #ffffff !important;
+    text-decoration: none;
+    text-align: center;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    display: block;
+    transition: background-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+    border: none;
+    min-width: 120px;
+}
+
+#gippslander-container .gipps-apply-btn:hover {
+    background-color: #8a847c; 
+    transform: translateY(-1px);
+}
+
+/* --- LOAD MORE BUTTON --- */
+#gippslander-container #gipps-load-more-btn {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto 30px auto;
+    padding: 12px 24px;
+    background: transparent;
+    border: 2px solid #9e978e;
+    color: #9e978e;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#gippslander-container #gipps-load-more-btn:hover {
+    background: #9e978e;
+    color: white;
+}
+
+/* --- FOOTER --- */
+#gippslander-container .gipps-footer {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#gippslander-container .gipps-footer-text {
+    color: #888;
+    font-size: 13px;
+}
+
+#gippslander-container .gipps-footer-logo {
+    height: 24px; /* Adjust size of logo */
+    width: auto;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    vertical-align: middle;
+}
+
+#gippslander-container .gipps-footer-logo:hover {
+    opacity: 1;
+}
+
+#gippslander-container .gipps-loading {
+    text-align: center; 
+    color: #888; 
+    padding: 40px; 
+    font-size: 16px;
+}
+
+/* --- RESPONSIVE --- */
+@media (min-width: 640px) {
+    #gippslander-container .gipps-top-bar {
+        flex-direction: row;
+    }
+    #gippslander-container .gipps-job-card {
+        flex-direction: row;
+        align-items: flex-start; 
+    }
+    #gippslander-container .gipps-apply-btn {
+        width: auto;
+        margin-left: 20px;
+        margin-top: 5px; 
+    }
+}
