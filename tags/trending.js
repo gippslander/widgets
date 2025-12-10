@@ -47,7 +47,7 @@ window.GIPPS_TRENDING_TAGS = [
   },
   { 
     label: "Inverloch", 
-    href: "/jobs/in-bairnsdale-victoria-australia", 
+    href: "/jobs/in-inverloch-victoria-australia", 
     type: 'loc', 
     weight: 8 
   },
