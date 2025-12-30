@@ -1,15 +1,15 @@
 [build]
   functions = "netlify/functions"
-  publish = "."  # This allows v1.js to be hosted at the root
+  publish = "."
 
-# This creates your clean URL path
+# This turns https://cdn.gippslander.com.au/get-jobs into a working API
 [[redirects]]
   from = "/get-jobs"
   to = "/.netlify/functions/get-jobs"
   status = 200
+  force = true
 
 [[headers]]
   for = "/*"
   [headers.values]
     Access-Control-Allow-Origin = "*"
-    Access-Control-Allow-Methods = "GET, POST, OPTION"
