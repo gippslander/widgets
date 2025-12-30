@@ -1,38 +1,28 @@
 export const handler = async (event) => {
-  // 1. Get the towns from the URL (e.g., ?loc=Inverloch,Wonthaggi)
-  const locationsStr = event.queryStringParameters.loc || "Inverloch";
-  const locations = locationsStr.split(',').map(l => l.trim());
-
-  // Your Jboard API Key (Keep this secret!)
-  const API_KEY = "YOUR_JBOARD_API_KEY_HERE";
+  // This pulls the key from the Netlify Environment Variable you just set
+  const API_KEY = process.env.JBOARD_API_KEY; 
+  const locParam = event.queryStringParameters.loc || "Inverloch";
+  const towns = locParam.split(',').map(t => t.trim());
 
   try {
-    // 2. Fetch jobs for each location
-    const promises = locations.map(loc => 
-      fetch(`https://app.jboard.io/api/v1/jobs?filter[query]=${encodeURIComponent(loc)}`, {
+    const requests = towns.map(town => 
+      fetch(`https://app.jboard.io/api/v1/jobs?filter[query]=${encodeURIComponent(town)}`, {
         headers: { "Authorization": API_KEY }
       }).then(res => res.json())
     );
 
-    const responses = await Promise.all(promises);
+    const responses = await Promise.all(requests);
+    let allJobs = responses.flatMap(r => r.items || []);
 
-    // 3. Combine results and remove duplicates (by Job ID)
-    const allJobs = responses.flatMap(r => r.items || []);
+    // Deduplicate by ID
     const uniqueJobs = Array.from(new Map(allJobs.map(job => [job.id, job])).values());
 
     return {
       statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*", // Allows any partner site to call this
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(uniqueJobs)
     };
-
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Failed to fetch jobs" })
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
   }
 };
