@@ -4,7 +4,7 @@
     const locations = scriptTag.getAttribute('loc') || 'Inverloch';
     
     // 2. Point this to your actual Netlify function URL
-    const API_BASE = "https://your-site-name.netlify.app/.netlify/functions/get-jobs";
+    const API_BASE = "https://cdn.gippslander.com.au/get-jobs";
     const requestUrl = `${API_BASE}?loc=${encodeURIComponent(locations)}`;
 
     const containerId = "gippslander-widget";
