@@ -9,7 +9,7 @@ export const handler = async (event) => {
     const requests = towns.map(async (town) => {
       // Updated endpoint: /api/jobs
       // Added parameters: page=1 and perPage=20
-      const url = `https://app.jboard.io/api/jobs?filter[query]=${encodeURIComponent(town)}&page=1&perPage=20`;
+      const url = `https://app.jboard.io/api/jobs?filter[query]=${encodeURIComponent(town)}&filter[final_status]=active&page=1&perPage=20`;
       
       const response = await fetch(url, {
         headers: { "Authorization": API_KEY }
