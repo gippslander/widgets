@@ -3,93 +3,100 @@
     const locations = scriptTag.getAttribute('loc') || 'Inverloch';
     const API_URL = `https://cdn.gippslander.com.au/get-jobs?loc=${encodeURIComponent(locations)}`;
 
-    // Create the widget container with modern styling
     const container = document.createElement('div');
+    // Main outer container styling to match your screenshot
     container.style.cssText = `
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        max-width: 450px;
-        margin: 10px auto;
-        border: 1px solid #e1e4e8;
-        border-radius: 12px;
-        overflow: hidden;
-        background: #ffffff;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        font-family: 'Inter', -apple-system, system-ui, sans-serif;
+        max-width: 650px;
+        margin: 20px auto;
+        padding: 10px;
     `;
     scriptTag.parentNode.insertBefore(container, scriptTag);
-
-    // Initial Loading State
-    container.innerHTML = `<div style="padding: 30px; text-align: center; color: #6a737d;">Searching for jobs in ${locations}...</div>`;
 
     try {
         const response = await fetch(API_URL);
         const jobs = await response.json();
 
         if (!jobs || jobs.length === 0) {
-            container.innerHTML = `
-                <div style="padding: 30px; text-align: center;">
-                    <p style="margin-bottom: 12px; color: #586069;">No current vacancies found in ${locations}.</p>
-                    <a href="https://gippslander.com.au" target="_blank" style="color: #0366d6; font-weight: 600; text-decoration: none;">Browse all Gippsland Jobs</a>
-                </div>`;
+            container.innerHTML = `<div style="text-align:center; padding:40px; color:#666;">No current openings in ${locations}.</div>`;
             return;
         }
 
-        // Generate the job rows
-        const jobListHtml = jobs.slice(0, 6).map(job => {
+        // Generate each job card
+        const jobCardsHtml = jobs.slice(0, 5).map(job => {
             const logo = job.employer.logo || 'https://gippslander.com.au/favicon.ico';
-            const town = job.location.split(',')[0];
-            
+            const locationText = job.location.split(',')[0];
+            const jobType = job.job_type?.name || 'Full-time'; // Safely access job type
+
             return `
-            <a href="${job.job_details_url}" target="_blank" class="gipps-job-row" style="
+            <div class="gipps-card" style="
+                background: #fff;
+                border: 1px solid #eef0f2;
+                border-radius: 16px;
+                padding: 24px;
+                margin-bottom: 16px;
                 display: flex;
                 align-items: center;
-                padding: 16px;
-                text-decoration: none;
-                border-bottom: 1px solid #f0f2f5;
-                transition: background 0.2s ease;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
             ">
-                <div style="width: 48px; height: 48px; flex-shrink: 0; margin-right: 16px;">
-                    <img src="${logo}" style="width: 100%; height: 100%; border-radius: 8px; object-fit: contain; border: 1px solid #f0f0f0;">
+                <div style="width: 64px; height: 64px; flex-shrink: 0; margin-right: 20px;">
+                    <img src="${logo}" style="width: 100%; height: 100%; border-radius: 12px; object-fit: contain; border: 1px solid #f0f0f0;">
                 </div>
+
                 <div style="flex-grow: 1;">
-                    <div style="font-weight: 700; color: #1a1a1a; font-size: 15px; line-height: 1.2; margin-bottom: 4px;">${job.title}</div>
-                    <div style="font-size: 13px; color: #666;">
-                        <span style="font-weight: 600; color: #444;">${job.employer.name}</span> • ${town}
+                    <div style="font-weight: 800; font-size: 18px; color: #1a1b1e; margin-bottom: 4px;">${job.title}</div>
+                    <div style="font-size: 14px; color: #6a6e73; margin-bottom: 12px;">${job.employer.name}</div>
+                    
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span style="background: #f1f3f5; color: #495057; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;">
+                            ${locationText}, Victoria
+                        </span>
+                        <span style="background: #e7f5ff; color: #1971c2; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 500;">
+                            ${jobType}
+                        </span>
                     </div>
                 </div>
-                <div style="color: #ccc; padding-left: 10px;">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M7 5l5 5-5 5"/></svg>
-                </div>
-            </a>`;
+
+                <a href="${job.job_details_url}" target="_blank" style="
+                    background: #a39c8e;
+                    color: white;
+                    text-decoration: none;
+                    padding: 12px 28px;
+                    border-radius: 10px;
+                    font-weight: 700;
+                    font-size: 14px;
+                    margin-left: 20px;
+                    transition: background 0.2s;
+                ">Apply</a>
+            </div>`;
         }).join('');
 
-        // Set the final HTML structure
         container.innerHTML = `
-            <div style="background: #fdfdfd; padding: 16px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="margin: 0; font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #2d3436;">Jobs in ${locations}</h3>
-                <img src="https://gippslander.com.au/favicon.ico" style="height: 20px; opacity: 0.8;">
-            </div>
-            <div style="max-height: 400px; overflow-y: auto;">
-                ${jobListHtml}
-            </div>
-            <a href="https://gippslander.com.au" target="_blank" style="
-                display: block;
-                padding: 14px;
-                text-align: center;
-                background: #f8f9fa;
-                color: #0366d6;
-                text-decoration: none;
-                font-size: 13px;
-                font-weight: 700;
-            ">
-                View all ${jobs.length} jobs on Gippslander →
-            </a>
             <style>
-                .gipps-job-row:hover { background: #fcfcfc !important; }
-                .gipps-job-row:last-child { border-bottom: none !important; }
+                .gipps-card:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+                    border-color: #d1d8df;
+                }
+                @media (max-width: 500px) {
+                    .gipps-card { flex-direction: column; text-align: center; }
+                    .gipps-card img { margin-right: 0; margin-bottom: 15px; }
+                    .gipps-card a { margin-left: 0; margin-top: 20px; width: 100%; box-sizing: border-box; }
+                    .gipps-card div { align-items: center; justify-content: center; }
+                }
             </style>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding:0 10px;">
+                <h2 style="font-size: 1.25rem; font-weight: 800; color: #1a1b1e; margin: 0;">Local Jobs via Gippslander</h2>
+                <a href="https://gippslander.com.au" target="_blank" style="color: #007bff; font-size: 13px; font-weight: 600; text-decoration: none;">View All →</a>
+            </div>
+            ${jobCardsHtml}
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="https://gippslander.com.au/post-a-job" target="_blank" style="font-size: 12px; color: #adb5bd; text-decoration: none;">+ Post a job here</a>
+            </div>
         `;
 
     } catch (e) {
-        container.innerHTML = `<div style="padding: 20px; color: #d73a49; font-size: 14px; text-align: center;">Unable to load jobs at this time.</div>`;
+        container.innerHTML = `<div style="text-align:center; padding:20px; color:#fa5252;">Unable to load current jobs.</div>`;
     }
 })();
