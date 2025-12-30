@@ -1,6 +1,10 @@
 (async () => {
     const scriptTag = document.currentScript;
     const locations = scriptTag.getAttribute('loc') || 'Inverloch';
+    
+    // CAPTURE CUSTOM COLOR (Defaults to #a39c8e if not provided)
+    const brandColor = scriptTag.getAttribute('btn-color') || '#a39c8e';
+
     const API_URL = `https://cdn.gippslander.com.au/get-jobs?loc=${encodeURIComponent(locations)}`;
 
     const container = document.createElement('div');
@@ -30,9 +34,9 @@
                     flex-grow: 1; padding: 14px 22px; border-radius: 50px; border: 1px solid #e2e8f0; 
                     font-size: 15px; outline: none; background: #f8fafc; transition: all 0.2s;
                 }
-                .gipps-search-input:focus { border-color: #a39c8e; background: #fff; }
+                .gipps-search-input:focus { border-color: ${brandColor}; background: #fff; }
                 .gipps-post-btn { 
-                    background: #a39c8e; color: white; text-decoration: none; padding: 14px 28px; 
+                    background: ${brandColor}; color: white; text-decoration: none; padding: 14px 28px; 
                     border-radius: 50px; font-weight: 700; font-size: 14px; white-space: nowrap; transition: opacity 0.2s;
                 }
                 .gipps-post-btn:hover { opacity: 0.9; }
@@ -51,10 +55,10 @@
                     background: #ecfdf5; color: #065f46; border: 1px solid #d1fae5;
                 }
                 .gipps-apply-btn { 
-                    background: #a39c8e; color: white; text-decoration: none; padding: 12px 32px; 
-                    border-radius: 8px; font-weight: 700; font-size: 14px; margin-left: auto; transition: background 0.2s;
+                    background: ${brandColor}; color: white; text-decoration: none; padding: 12px 32px; 
+                    border-radius: 8px; font-weight: 700; font-size: 14px; margin-left: auto; transition: opacity 0.2s;
                 }
-                .gipps-apply-btn:hover { background: #8e8779; }
+                .gipps-apply-btn:hover { opacity: 0.9; }
                 @media (max-width: 600px) {
                     .gipps-card { flex-direction: column; text-align: center; }
                     .gipps-apply-btn { margin-left: 0; margin-top: 20px; width: 100%; box-sizing: border-box; }
@@ -93,7 +97,6 @@
                 const jobType = job.job_type?.name || 'Full-time';
                 const locationLabel = job.location ? job.location.split(',')[0] : 'Gippsland';
                 
-                // Logic for Salary Badge
                 let salaryHtml = '';
                 if (job.salary_min || job.salary_max) {
                     const salaryText = job.salary_min && job.salary_max 
